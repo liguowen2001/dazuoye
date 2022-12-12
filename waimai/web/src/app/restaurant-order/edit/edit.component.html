@@ -1,0 +1,43 @@
+<form class="container-sm" (ngSubmit)="onSubmit(formGroup)" [formGroup]="formGroup">
+
+  <div class="mb-3 row">
+    <label class="col-sm-2 col-form-label text-right" >名称<code>*</code></label>
+    <div class="col-sm-10">
+      <input type="text" [formControlName]="formKeys.name" class="form-control" name="name">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-sm-2 col-form-label text-right" >价格<code>*</code></label>
+    <div class="col-sm-10">
+      <input type="text" [formControlName]="formKeys.price" class="form-control" name="name">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-sm-2 col-form-label text-right" >折扣<code>*</code></label>
+    <div class="col-sm-10">
+      <input type="text" [formControlName]="formKeys.discount" class="form-control" name="name">
+    </div>
+  </div>
+  <div class=" row p-3">
+    <label class="col-3 text-right col-form-label" >图片<code>*</code></label>
+    <input style="display: none"  type="file" class="file-input"
+           (change)="onFileSelected($event)" #fileUpload>
+    <div class="file-upload  col">
+      <button type="button" (click)="fileUpload.click()" class="upload-btn btn-sm btn-success">
+        <i class="fas fa-file-image"></i> 选择图片
+      </button>
+    </div>
+  </div>
+  <div class="row p-3">
+    <label class="col-3 text-right col-form-label" ></label>
+    <div class="col">
+      <img [src]="sanitizerUrl" class="web-img">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <div class="col-sm-10 offset-2">
+      <button class="btn btn-primary" [disabled]="formGroup.invalid " type="submit"><i class="fas fa-save"></i>保存
+      </button>
+    </div>
+  </div>
+</form>

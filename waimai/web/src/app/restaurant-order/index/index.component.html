@@ -1,0 +1,58 @@
+<form (submit)="onSubmit(queryForm)" [formGroup]="queryForm" class="form-group">
+  <div class="form-row justify-content-between">
+    <div class="form-group col-md-3">
+      <label>状态</label>
+      <select [formControlName]="keys.status" class="form-control">
+        <option [value]="1">顾客已支付</option>
+        <option [value]="2">已接单</option>
+        <option [value]="3">已出单</option>
+        <option [value]="4">派送中</option>
+        <option [value]="5">待评价</option>
+        <option [value]="6">已完成</option>
+      </select>
+    </div>
+    <div class="form-group col-md-3 text-left align-self-end search">
+      <button class="btn btn-info" type="submit"><i class="fas fa-search"></i> 查询</button>
+    </div>
+  </div>
+</form>
+<yz-size (changeSize)="onSizeChange($event)" [size]="pageData.size"></yz-size>
+<table class="table table-striped mt-2">
+  <thead>
+  <tr class="table-primary">
+    <th>序号</th>
+    <th>顾客</th>
+    <th>菜品</th>
+    <th>总价</th>
+    <th>状态</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let myOrder of pageData.content; index as i">
+    <td>{{ i + 1 }}</td>
+    <td>{{myOrder.customer.user.name}}</td>
+    <td>
+      <div class="row" *ngFor="let dishesOrder of myOrder.dishesOrders">
+        <div class="col">
+          <label>{{dishesOrder.dishes.name + '  ' + dishesOrder.count}}份</label>
+        </div>
+      </div>
+    </td>
+    <td>{{myOrder.totalPrice }}</td>
+    <td>{{myOrder.status |status}}</td>
+    <td>
+      <span (click)="statusChange(myOrder)" *ngIf="myOrder.status == 1" class="btn btn-sm btn-outline-success">
+        <i class="fas fa-pen"></i>接单
+      </span>
+      <span (click)="statusChange(myOrder)" *ngIf="myOrder.status == 2" class="btn btn-sm btn-outline-primary">
+        <i class="fas fa-pen"></i>出单
+      </span>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<yz-page (changePage)="onPageChange($event)" *ngIf="pageData.content"
+         [page]="pageData.number"
+         [size]="pageData.size"
+         [totalElements]="pageData.totalElements"></yz-page>

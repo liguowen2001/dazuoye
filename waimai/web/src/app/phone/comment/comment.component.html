@@ -1,0 +1,23 @@
+<ion-content>
+  <ion-list [formGroup]="formGroup">
+    <ion-item>
+      <ion-label position="stacked">饭店评分</ion-label>
+      <ion-input [formControlName]="formKeys.restaurantScore" placeholder="0-10"></ion-input>
+    </ion-item>
+    <ion-item counter="true" class="item-text-wrap">
+      <ion-label position="stacked">饭店评价</ion-label>
+      <ion-input [formControlName]="formKeys.restaurantDetail" maxlength="200"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">骑手评分</ion-label>
+      <ion-input [formControlName]="formKeys.riderScore" placeholder="0-10"></ion-input>
+    </ion-item>
+    <ion-item counter="true">
+      <ion-label position="stacked">骑手评价</ion-label>
+      <ion-input [formControlName]="formKeys.riderDetail" maxlength="200" placeholder=""></ion-input>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<div class="col-12" style="position:absolute; bottom:0">
+  <ion-button (click)="submit()" expand="full">发布评论</ion-button>
+</div>

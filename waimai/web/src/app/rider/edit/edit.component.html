@@ -1,0 +1,40 @@
+<form (ngSubmit)="onSubmit(formGroup)" [formGroup]="formGroup" class="container-sm">
+  <div class="mb-3 row">
+    <label class="col-3 text-right col-form-label" for="name">姓名<code>*</code></label>
+    <div class="col-7">
+      <input [formControlName]="formKeys.name" class="form-control" id="name" type="text">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-3 text-right col-form-label" for="username">用户名<code>*</code></label>
+    <div class="col-7">
+      <input [formControlName]="formKeys.userName" class="form-control" id="username" type="text">
+      <small class="text-danger"
+             *ngIf="formGroup.get(this.formKeys.userName)!.touched && formGroup.get(formKeys.userName)!.invalid">
+        <span
+          *ngIf="user.username!==formGroup.get(this.formKeys.userName).value && formGroup.get(this.formKeys.userName).errors.userExist">
+                      该用户已存在，请重新输入！
+        </span>
+      </small>
+    </div>
+  </div>
+  <div class="col-7 offset-3">
+    <small class="text-danger" *ngIf="formGroup.get('username').invalid">
+      <span>{{formGroup.get('username').getError('username')}}</span>
+    </small>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-3 text-right col-form-label" for="name">电话<code>*</code></label>
+    <div class="col-7">
+      <input class="form-control" [formControlName]="formKeys.phone">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <div class="col-10 offset-5">
+      <button
+        [disabled]="user.username!==formGroup.get(this.formKeys.userName).value && formGroup.get(formKeys.userName).invalid || formGroup.get(formKeys.name).invalid"
+        class="btn btn-primary" type="submit"><i class="far fa-save"></i> 保存
+      </button>
+    </div>
+  </div>
+</form>

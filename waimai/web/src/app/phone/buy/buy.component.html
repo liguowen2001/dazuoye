@@ -1,0 +1,28 @@
+<ion-list>
+  <ion-item *ngFor="let dishes of dishes" color="">
+    <ion-col class="text-center border-right">
+      <img src="/images/{{dishes.picture}} "  width="80px" >
+    </ion-col>
+    <ion-col class="text-center" >
+      <ion-row>
+        <ion-col>
+          <ion-label >{{dishes.name}}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-label class="text-success">{{dishes.price}}元</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label class="text-success">{{dishes.discount}}折</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+    <ion-col size="2" class="text-right">
+      <button (click)="outCart(dishes)" class="fa fa-minus"></button>
+    </ion-col>
+    <ion-col  size="2" class="text-right">
+      <button (click)="inCart(dishes)" class="fa fa-plus"></button>
+    </ion-col>
+  </ion-item>
+</ion-list>

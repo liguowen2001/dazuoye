@@ -1,0 +1,60 @@
+<form (submit)="onSubmit(queryForm)" [formGroup]="queryForm" class="form-group">
+  <div class="form-row ">
+    <div class="form-group col-md-3">
+      <label>名称</label>
+      <input class="form-control" formControlName="name" type="text">
+    </div>
+    <div class="form-group col-md-3">
+      <label>状态</label>
+      <select [formControlName]="keys.status" class="form-control">
+        <option [value]="0">休息</option>
+        <option [value]="1">闲置</option>
+        <option [value]="2">送餐中</option>
+      </select>
+    </div>
+    <div class="form-group col-md-3 text-left align-self-end search">
+      <button class="btn btn-info" type="submit"><i class="fas fa-search"></i> 查询</button>
+    </div>
+  </div>
+</form>
+<div class="row mb-2">
+  <div class="col-12 text-right">
+    <a class="btn btn-primary" routerLink="add"><i class="fas fa-plus"></i>新增</a>
+  </div>
+</div>
+<yz-size (changeSize)="onSizeChange($event)" [size]="pageData.size"></yz-size>
+<table class="table table-striped mt-2">
+  <thead>
+  <tr class="table-primary">
+    <th>序号</th>
+    <th>姓名</th>
+    <th>联系方式</th>
+    <th>状态</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let rider of pageData.content; index as i">
+    <td>{{ pageData.size * pageData.number + i + 1 }}</td>
+    <td>{{ rider.user.name}}</td>
+    <td>{{rider.phone}}</td>
+    <td>{{ rider.status| status}}</td>
+    <td>
+      <a class="btn btn-outline-primary btn-sm" routerLink="edit/{{rider.id}}">
+        <i class="fas fa-pen"></i>编辑
+      </a>
+      <button (click)="onResetPassword(rider.user.id)" class="btn btn-sm btn-outline-warning">
+        <i class="fas fa-key"></i> 重置密码
+      </button>
+      <button (click)="onDelete(rider)" class="btn btn-sm btn-outline-danger">
+        <i class="far fa-trash-alt"></i>删除
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<yz-page (changePage)="onPageChange($event)" *ngIf="pageData.content"
+         [page]="pageData.number"
+         [size]="pageData.size"
+         [totalElements]="pageData.totalElements"></yz-page>
+
