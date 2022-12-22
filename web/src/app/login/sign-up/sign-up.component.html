@@ -1,0 +1,95 @@
+<form (ngSubmit)="onSubmit(formGroup)" [formGroup]="formGroup" class="container-sm">
+  <div class=" row p-3">
+    <label class="col-3 text-right col-form-label" >头像<code>*</code></label>
+    <input style="display: none"  type="file" class="file-input"
+           (change)="onFileSelected($event)" #fileUpload>
+    <div class="file-upload  col">
+      <button type="button" (click)="fileUpload.click()" class="upload-btn btn-sm btn-success">
+        <i class="fas fa-file-image"></i> 选择图片
+      </button>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-3 text-right col-form-label" for="name">姓名<code>*</code></label>
+    <div class="col-7">
+      <input [formControlName]="formKeys.name" class="form-control" id="name" type="text">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-3 text-right col-form-label" for="username">用户名<code>*</code></label>
+    <div class="col-7">
+      <input [formControlName]="formKeys.username" class="form-control" id="username" type="text">
+      <small class="text-danger"
+             *ngIf="formGroup.get(this.formKeys.username)!.touched && formGroup.get(this.formKeys.username)!.invalid">
+        <span *ngIf="user.username!==formGroup.get(this.formKeys.username).value && formGroup.get(this.formKeys.username).errors.userExist">
+                      该用户已存在，请重新输入！
+        </span>
+      </small>
+    </div>
+  </div>
+  <div class="col-7 offset-3">
+    <small class="text-danger" *ngIf="formGroup.get(this.formKeys.username)!.touched &&formGroup.get(this.formKeys.username).invalid">
+      <span>{{formGroup.get('username').getError('username')}}</span>
+    </small>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-3 text-right col-form-label" for="name">密码<code>*</code></label>
+    <div class="col-7">
+      <input [formControlName]="formKeys.password" class="form-control " type="password">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-3 text-right col-form-label" for="name">地址<code>*</code></label>
+    <div class="col-7">
+      <input [formControlName]="formKeys.address" class="form-control" type="text">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-3 text-right col-form-label" for="name">角色<code>*</code></label>
+    <div class="col-7">
+      <select [formControlName]="formKeys.role" class="form-control">
+        <option [value]="1">饭店</option>
+        <option [value]="2">食客</option>
+        <option [value]="3">骑手</option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="formGroup.get(formKeys.role).value == 1">
+    <div class="mb-3 row">
+      <label class="col-3 text-right col-form-label" for="name">名称<code>*</code></label>
+      <div class="col-7">
+        <input [formControlName]="formKeys.restaurantName" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label class="col-3 text-right col-form-label" for="name">联系电话<code>*</code></label>
+      <div class="col-7">
+        <input [formControlName]="formKeys.phone" class="form-control" type="text">
+      </div>
+    </div>
+  </div>
+  <div *ngIf="formGroup.get(formKeys.role).value == 3" class="mb-3 row">
+    <label class="col-3 text-right col-form-label" for="name">联系电话<code>*</code></label>
+    <div class="col-7">
+      <input [formControlName]="formKeys.phone" class="form-control" type="text">
+    </div>
+  </div>
+  <div *ngIf="formGroup.get(formKeys.role).value == 1"  class=" row p-3">
+    <label class="col-3 text-right col-form-label" >收款码<code>*</code></label>
+    <input style="display: none"  type="file" class="file-input"
+           (change)="onCodeSelected($event)" #fileUpload>
+    <div class="file-upload  col">
+      <button type="button" (click)="fileUpload.click()" class="upload-btn btn-sm btn-success">
+        <i class="fas fa-file-image"></i> 选择图片
+      </button>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <div class="col-10 offset-5">
+      <button [disabled]="formGroup.get(formKeys.username).invalid || formGroup.get(formKeys.name).invalid || canSubmit "
+              class="btn btn-primary" type="submit"><i class="far fa-save"></i> 保存
+      </button>
+    </div>
+  </div>
+</form>

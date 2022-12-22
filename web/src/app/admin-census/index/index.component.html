@@ -1,0 +1,19 @@
+<form [formGroup]="formGroup">
+  <div class="row">
+    <div class="col">
+      <label>开始时间</label>
+      <yz-date [formControlName]="formKeys.startTime"></yz-date>
+    </div>
+    <div class="col">
+      <label>截止时间</label>
+      <yz-date [formControlName]="formKeys.endTime"></yz-date>
+    </div>
+    <div class="col"></div>
+  </div>
+  <h2 class="text-success">营收统计(元)</h2>
+  <small style="color: #2dd36f">默认为本周</small>
+
+  <div style="height: 500px;" id="income">收入统计</div>
+  <h2 class="text-success">总收入:{{this.totalIncome}}元</h2>
+
+</form>

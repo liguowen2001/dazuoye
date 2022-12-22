@@ -1,0 +1,35 @@
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let comment of comments" >
+      <ion-col>
+        <ion-row>
+          <ion-col >
+            <img src="/images/{{comment.myOrder.customer.user.pictureName}}" class="card-img-top" alt="..." style="width:50px; height:50px; border-radius:50%">
+          </ion-col>
+          <ion-col class="text-center">
+            <p>{{comment.myOrder.customer.user.name}}</p>
+          </ion-col>
+          <ion-col></ion-col>
+          <ion-col></ion-col>
+          <ion-col></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <p class="text-success">{{comment.restaurantScore}}分</p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <small>{{comment.createTime|date: 'shortDate'}}</small>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <p>{{comment.restaurantDetail}}</p>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
