@@ -34,7 +34,9 @@
       <img src="/images/{{dishes.picture}} " alt="..." height="80px" ></td>
     <td>{{dishes.name}}</td>
     <td>{{ dishes.price }}</td>
-    <td>{{ dishes.discount }}折</td>
+    <td *ngIf="dishes.discount!=10">{{ dishes.discount }}折</td>
+    <td *ngIf="dishes.discount==10">无</td>
+
     <td>{{ dishes.status|status}}</td>
 
     <td>

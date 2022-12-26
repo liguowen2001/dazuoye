@@ -14,7 +14,7 @@
           <ion-col>
             <ion-label class="text-success">{{dishes.price}}元</ion-label>
           </ion-col>
-          <ion-col>
+          <ion-col *ngIf="dishes.discount!=10">
             <ion-label class="text-success">{{dishes.discount}}折</ion-label>
           </ion-col>
         </ion-row>

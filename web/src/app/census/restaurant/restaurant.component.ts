@@ -138,6 +138,9 @@ export class RestaurantComponent implements OnInit {
     this.formGroup.addControl(this.formKeys.endTime, new FormControl());
   }
 
+  /**
+   * 初始化收入统计
+   */
   initChart() {
     var chartDom = document.getElementById('income');
     var myChart = echarts.init(chartDom);
@@ -145,6 +148,9 @@ export class RestaurantComponent implements OnInit {
     this.option && myChart.setOption(this.option);
   }
 
+  /**
+   * 初始化销量统计
+   */
   initDishesChart() {
     var chartDom = document.getElementById('dishes');
     var myChart = echarts.init(chartDom);
@@ -152,6 +158,9 @@ export class RestaurantComponent implements OnInit {
     this.dishesOption && myChart.setOption(this.dishesOption);
   }
 
+  /**
+   * 获得时间
+   */
   initTime() {
     let date = new Date();
     this.week = this.transform(date);
@@ -162,13 +171,12 @@ export class RestaurantComponent implements OnInit {
     this.xData = [];
     this.yData = [];
     if (value.startTime == null || value.endTime == null) {
-      this.getYDateByWeek();
+      this.getYDateByWeek(this.week);
     } else {
       let startTime = value.startTime;
       let endTime = value.endTime;
       this.getYDateByTime(startTime, endTime);
     }
-    this.initChart();
   }
 
   /**
@@ -202,7 +210,26 @@ export class RestaurantComponent implements OnInit {
   /**
    * 获取本周数据
    */
-  getYDateByWeek() {
+  getYDateByWeek(week: number) {
+    this.dishesOrderService.getTotalPriceByRestaurantAndTime(
+      this.restaurant.id,
+      this.today - week * this.oneDay + this.oneDay,
+      this.today - week * this.oneDay + this.oneDay * 2)
+      .subscribe(value => {
+        week--;
+        this.yData.push(Number(value.toString().match(/^\d+(?:\.\d{0,2})?/)));
+        if (week == 0) {
+          this.setXData();
+          this.option.series[0].data = this.yData;
+          this.option.xAxis.data = this.xData;
+          this.initChart();
+        } else {
+          this.getYDateByWeek(week);
+        }
+      });
+  }
+
+  setXData(){
     for (let i = 0; i < this.week; i++) {
       switch (i) {
         case 0:
@@ -228,23 +255,7 @@ export class RestaurantComponent implements OnInit {
           break;
       }
     }
-
-    for (let week = this.week; week > 0; week--) {
-      this.dishesOrderService.getTotalPriceByRestaurantAndTime(
-        this.restaurant.id,
-        this.today - week * this.oneDay + this.oneDay,
-        this.today - week * this.oneDay + this.oneDay * 2)
-        .subscribe(value => {
-          this.yData.push(Number(value.toString().match(/^\d+(?:\.\d{0,2})?/)));
-          if (week == 1) {
-            this.option.series[0].data = this.yData;
-            this.option.xAxis.data = this.xData;
-            this.initChart();
-          }
-        });
-    }
   }
-
   /**
    * 递归获得每一天的数据
    * @param startTime
@@ -283,31 +294,33 @@ export class RestaurantComponent implements OnInit {
     this.dishesArray = [];
     this.dishesXData = [];
     this.dishesYData = [];
+    let i = 0;
     if (value.startTime == null || value.endTime == null) {
       this.initTime();
       let endTime = this.today + this.oneDay;
       let startTime = this.today - (this.week - 1) * this.oneDay;
-      this.getDishesArray(startTime, endTime);
+      this.getDishesArray(startTime, endTime,i);
     } else {
-      this.getDishesArray(value.startTime, value.endTime + this.oneDay);
+      this.getDishesArray(value.startTime, value.endTime + this.oneDay,i);
     }
   }
 
-  getDishesArray(startTime: number, endTime: number) {
-    for (let i = 0; i < this.dishes.length; i++) {
+  getDishesArray(startTime: number, endTime: number, i: number) {
       let dishes = this.dishes[i];
       this.dishesOrderService.getCountByDishesAndTime(dishes.id, startTime, endTime)
         .subscribe(value => {
+          i++;
           this.dishesArray.push({
             dishes: dishes,
             count: value
           });
-          if (i == this.dishes.length - 1) {
+          if (i == this.dishes.length ) {
             this.sort();
             this.setDishesData();
+          }else {
+            this.getDishesArray(startTime,endTime,i);
           }
         });
-    }
   }
 
   sort() {

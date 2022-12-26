@@ -45,7 +45,7 @@ export class EditComponent implements OnInit {
   }
 
   initFormControl(): void {
-    this.formGroup.addControl(this.formKeys.drawProportion, new FormControl('', Validators.required));
+    this.formGroup.addControl(this.formKeys.drawProportion, new FormControl('', [Validators.required,Validators.max(100),Validators.min(1)]));
   }
 
   ngOnInit(): void {

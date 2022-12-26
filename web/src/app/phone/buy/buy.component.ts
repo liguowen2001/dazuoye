@@ -132,8 +132,6 @@ export class BuyComponent implements OnInit {
    * @param dishes
    */
   outCart(dishes: Dishes) {
-    console.log('click');
-    console.log(this.order);
     let include = false;
     let newDishesOrder: DishesOrder;
     this.order.dishesOrders?.forEach(function (dishesOrder) {

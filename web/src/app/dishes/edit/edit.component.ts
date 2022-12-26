@@ -14,6 +14,7 @@ import {DomSanitizer} from '@angular/platform-browser';
   styleUrls: ['./edit.component.css']
 })
 export class EditComponent implements OnInit {
+  fileChange = false;
 
   constructor(private route: ActivatedRoute,
               private dishesService: DishesService,
@@ -70,24 +71,28 @@ export class EditComponent implements OnInit {
       status: this.dishes.status,
       picture: this.dishes.picture
     });
+    if (this.fileChange){
+      let formData = new FormData();
+      formData.append('file', this.file);
+      formData.append('fileName', this.dishes.picture);
+      this.fileService.update(formData)
+        .subscribe(() => {
 
-    let formData = new FormData();
-    formData.append('file', this.file);
-    formData.append('fileName', this.dishes.picture);
-    this.fileService.update(formData)
-      .subscribe(() => {
-        this.dishesService.update(this.dishes.id, newDishes)
-          .subscribe(() => {
-              this.commonService.success(() => this.commonService.back());
-            },
-            error => {
-              this.commonService.error();
-            });
-      });
+        });
+    }else {
+      this.dishesService.update(this.dishes.id, newDishes)
+        .subscribe(() => {
+            this.commonService.success(() => this.commonService.back());
+          },
+          error => {
+            this.commonService.error();
+          });
+    }
   }
 
   onFileSelected(event) {
     const file: File = event.target.files[0];
+    this.fileChange = true;
     if (file) {
       this.canSubmit = false;
       this.file = file;

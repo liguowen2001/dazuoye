@@ -19,5 +19,5 @@
   </ion-list>
 </ion-content>
 <div class="col-12" style="position:absolute; bottom:0">
-  <ion-button (click)="submit()" expand="full">发布评论</ion-button>
+  <ion-button (click)="submit()" expand="full" [disabled]="formGroup.invalid">发布评论</ion-button>
 </div>

@@ -58,6 +58,7 @@ export class IndexComponent implements OnInit {
   oneDay = 86400000;
   totalIncome = 0;
   restaurants = [] as Restaurant[];
+  i = 0;
 
   constructor(private dishesOrderService: DishesOrderService,
               private userService: UserService,
@@ -106,11 +107,13 @@ export class IndexComponent implements OnInit {
       this.today = new Date(this.getTime(date.getTime())).getTime();
       let endTime = this.today + this.oneDay;
       let startTime = this.today - (this.week - 1) * this.oneDay;
-      this.getDataByTime(startTime, endTime);
+      let i = 0;
+      this.getDataByTime(startTime, endTime,i);
     } else {
+      let i = 0;
       let startTime = value.startTime;
       let endTime = value.endTime;
-      this.getDataByTime(startTime, endTime);
+      this.getDataByTime(startTime, endTime,i);
     }
   }
 
@@ -143,21 +146,26 @@ export class IndexComponent implements OnInit {
 
   }
 
-  private getDataByTime(startTime: number, endTime: number) {
-    for (let i = 0; i < this.restaurants.length; i++) {
-      let restaurant = this.restaurants[i];
-      this.dishesOrderService.getTotalPriceByRestaurantAndTime(restaurant.id, startTime, endTime)
-        .subscribe(value => {
-          this.restaurantsArray.push({
-            restaurant: restaurant,
-            totalPrice: Number(value.toString().match(/^\d+(?:\.\d{0,2})?/))
-          });
-          if (i == this.restaurants.length-1){
-            this.sort();
-            this.setData();
-          }
+  private getDataByTime(startTime: number, endTime: number, i) {
+    let restaurant = this.restaurants[i];
+    this.dishesOrderService.getTotalPriceByRestaurantAndTime(restaurant.id, startTime, endTime)
+      .subscribe(value => {
+        this.restaurantsArray.push({
+          restaurant: restaurant,
+          totalPrice: Number(value.toString().match(/^\d+(?:\.\d{0,2})?/))
         });
-    }
+        i++;
+        if (i == this.restaurants.length ) {
+          this.sort();
+          this.setData();
+        } else {
+          this.getDataByTime(startTime, endTime, i);
+        }
+        // if (i == this.restaurants.length - 1) {
+        //   this.sort();
+        //   this.setData();
+        // }
+      });
   }
 
   sort() {
@@ -177,7 +185,7 @@ export class IndexComponent implements OnInit {
       let restaurantsArrayElement = this.restaurantsArray[i];
       this.xData.push(restaurantsArrayElement.restaurant.name);
       this.yData.push(restaurantsArrayElement.totalPrice);
-      this.totalIncome+= restaurantsArrayElement.restaurant.drawProportion*restaurantsArrayElement.totalPrice/100
+      this.totalIncome += restaurantsArrayElement.restaurant.drawProportion * restaurantsArrayElement.totalPrice / 100;
     }
     this.option.xAxis.data = this.xData;
     this.option.series[0].data = this.yData;

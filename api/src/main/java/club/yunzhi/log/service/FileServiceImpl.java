@@ -12,11 +12,11 @@ import java.util.UUID;
 @Service
 public class FileServiceImpl implements FileService {
 
-    String rootPath = "/home/liguowen/文档/images/";
+    //String rootPath = "/home/liguowen/文档/images/";
 
     //String rootPath = "C:/project/firstWeb/files/";
 
-    //String rootPath = "/home/ubuntu/teaching-plan/files/";
+    String rootPath = "/home/ubuntu/teaching-plan/files/";
     @Override
     public String save(MultipartFile file){
         String newFileName = UUID.randomUUID().toString()+file.getOriginalFilename();
