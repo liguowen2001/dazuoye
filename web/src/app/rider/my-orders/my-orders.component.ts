@@ -24,14 +24,11 @@ export class MyOrdersComponent implements OnInit {
   ngOnInit(): void {
     this.userService.currentLoginUser$
       .subscribe(user => {
-        console.log(user);
         this.riderService.getByUserId(user.id)
           .subscribe( rider => {
-            console.log(rider);
             this.myOrderService.getAllByRider(rider.id)
               .subscribe(myOrders => {
                 this.myOrders = myOrders;
-                console.log(myOrders);
               })
           })
       })
